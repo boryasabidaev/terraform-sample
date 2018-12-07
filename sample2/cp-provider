@@ -1,0 +1,1 @@
+cp $GOPATH/bin/terraform-provider-kubernetes .

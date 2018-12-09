@@ -1,6 +1,9 @@
 
 kubeconfig_file = "/home/borissabidaev/work/dlp-bedrock/assets/auth/dev1-config"
 
+bedrock_admins = [
+  "boryasabidaev",
+]
 
 bedrock_namespaces = [
   "namespace1",

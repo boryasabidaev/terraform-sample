@@ -1,3 +1,23 @@
+# resource "kubernetes_cluster_role_binding" "bedrock_admins" {
+#   count = "${length(var.bedrock_admins)}"
+#   
+#   metadata {
+#     name = "${var.bedrock_admins[count.index]}"
+#   }
+
+#   role_ref {
+#     kind = "ClusterRole"
+#     name = "cluster-admin"
+#     api_group = "rbac.authorization.k8s.io"
+#   }
+
+#   subject {
+#     kind = "User"
+#     name = "${var.bedrock_admins[count.index]}"
+#     api_group = "rbac.authorization.k8s.io"
+#   }
+# }
+
 # resource "kubernetes_namespace" "bedrock_namespaces" {
 #   count = ${length(var.bedrock_namespaces)}
  

@@ -1,66 +1,17 @@
-# resource "kubernetes_cluster_role" "cluster_role" {
-#   metadata {
-#     name = "newclusterrole"
-#   }
-
-#   rule {
-#     api_groups = [""]
-#     resources  = [""]
-#     verbs      = ["get", "watch"]
-#   }
-# }
-
-# resource "kubernetes_role_binding" "role_binding" {
-#   metadata {
-#     name = "newrolebinding"
-#     namespace = "${kubernetes_namespace.k8s_provider_test.metadata.0.name}"
-#   }
-
-#   role_ref {
-#     kind = "ClusterRole"
-#     name = "cluster-admin"
-#     api_group = "rbac.authorization.k8s.io"
-#   }
-
-#   subject {
-#     kind = "User"
-#     name = "borya-sabidaev"
-#     api_group = "rbac.authorization.k8s.io"
-#   }
-# }
-
-# resource "kubernetes_cluster_role_binding" "cluster_role_binding" {
-#   metadata {
-#     name = "new-cluster-rb"
-#   }
-
-#   role_ref {
-#     kind = "ClusterRole"
-#     name = "cluster-admin"
-#     api_group = "rbac.authorization.k8s.io"
-#   }
-
-#   subject {
-#     kind = "User"
-#     name = "borya-sabidaev"
-#     api_group = "rbac.authorization.k8s.io"
-#   }
-# }
-
-
-# resource "kubernetes_namespace" "products" {
-#   count = ${length(var.map)}
+# resource "kubernetes_namespace" "bedrock_namespaces" {
+#   count = ${length(var.bedrock_namespaces)}
  
 #   metadata {
-#     name = "${element(keys(var.map), count.index)}"
+#     name = "${element(var.bedrock_namespaces, count.index)}"
 #   }
 # }
 
-# resource "kubernetes_role_binding" "products" {
-#   count = 
+# resource "kubernetes_role_binding" "bedrock_users" {
+#   count = "${length(var.bedrock_users)}"
+#   
 #   metadata {
-#     name = "newrolebinding"
-#     namespace = "${kubernetes_namespace.k8s_provider_test.metadata.0.name}"
+#     name = "${lookup(var.bedrock_users[count.index], "name")}"
+#     namespace = "${lookup(var.bedrock_users[count.index], "namespace")}"
 #   }
 
 #   role_ref {
@@ -70,24 +21,26 @@
 #   }
 
 #   subject {
-#     kind = "User"
-#     name = "borya-sabidaev"
+#     kind = "${lookup(var.bedrock_users[count.index], "kind")}"
+#     name = "${lookup(var.bedrock_users[count.index], "name")}"
 #     api_group = "rbac.authorization.k8s.io"
 #   }
 # }
 
+data "template_file" "temp" {
+  count = "${length(var.bedrock_users)}"
+
+  template = "${lookup(var.bedrock_users[count.index], "name")}"
+}
+
+output "output0" {
+  value = "${var.bedrock_namespaces}"
+}
+
 output "output1" {
-  value = "${lookup(var.map["namespace1"], "users")}"
+  value = "${var.bedrock_users}"
 }
 
 output "output2" {
-  value = "${transpose(var.map2)}"
-}
-
-output "output3" {
-  value = "${var.map2}"
-}
-
-output "output4" {
-  value = "${transpose(var.map3["namespace1"])}"
+  value = "${data.template_file.temp.1.rendered}"
 }

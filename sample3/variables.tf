@@ -3,17 +3,12 @@ variable "kubeconfig_file" {
   description = "Path to kubeconfig"
 }
 
-variable "map" {
-  type = "map"
+variable "bedrock_namespaces" {
+  type = "list"
   description = "describe your variable"
 }
 
-variable "map2" {
-  type = "map"
-  description = "describe your variable"
-}
-
-variable "map3" {
-  type = "map"
+variable "bedrock_users" {
+  type = "list"
   description = "describe your variable"
 }
